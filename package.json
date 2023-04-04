@@ -1,0 +1,16 @@
+{
+  "name": "tiptap-text-direction",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
+  }
+}
