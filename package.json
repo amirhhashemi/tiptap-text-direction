@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "check": "tsc",
+    "ci": "pnpm check && pnpm build"
   },
   "keywords": [],
   "author": "",
