@@ -1,17 +1,27 @@
 {
   "name": "tiptap-text-direction",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "private": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "check": "tsc",
-    "ci": "pnpm check && pnpm build"
+    "ci": "pnpm check && pnpm build",
+    "release": "pnpm check && pnpm build && changeset publish "
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "keywords": [
+    "prosemirror",
+    "tiptap",
+    "right-to-left",
+    "rtl",
+    "text-direction",
+    "farsi"
+  ],
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3"
   }
