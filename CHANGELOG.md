@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.1.2
+
+### Patch Changes
+
+- 9889787: Add license to package.json
+
 ## 0.1.1
 
 ### Patch Changes
