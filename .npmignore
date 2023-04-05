@@ -3,3 +3,4 @@ node_modules
 .changeset
 pnpm-lock.json
 tsconfig.json
+CHANGELOG.md
