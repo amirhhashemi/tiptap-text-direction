@@ -1,5 +1,14 @@
 This extension adds the `dir` attribute to a configurable list of nodes. The direction (`ltr` or `rtl`) is automatically detected based on the node's content.
 
+**Why not use `dir="auto"`?**
+`dir="auto"` changes the text direction based on the element's content too, so why not use that?
+
+1. It doesn't give you granular control over the direction. For example, if you want to have different styles based on the direction you can't do that with `dir="auto"`. There is `:dir()` pseudo-class that can help you in this situation but it's only supported in Firefox.
+
+2. You can't override it. `dir="auto"` uses the first character of the element to determine the direction and you can't change it unless you explicitly define the direction using `dir="ltr|rtl"`.
+
+3. You have to add `dir="auto"` to every element and that increases the output HTML size. While this extension only adds the `dir` when needed.
+
 ## Installation
 
 ```bash
