@@ -79,7 +79,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
   addOptions() {
     return {
       types: [],
-      directions: ["ltr", "rtl", "auto"],
+      directions: ["ltr", "rtl"],
       defaultDirection: "ltr",
     };
   },
