@@ -17,7 +17,7 @@ This extension adds the `dir` attribute to a configurable list of nodes. The dir
 npm install tiptap-text-direction
 
 # yarn
-npm add tiptap-text-direction
+yarn add tiptap-text-direction
 
 # pnpm
 pnpm install tiptap-text-direction
