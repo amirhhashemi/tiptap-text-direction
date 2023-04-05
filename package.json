@@ -1,28 +1,39 @@
 {
   "name": "tiptap-text-direction",
   "version": "0.0.1",
-  "description": "",
+  "description": "Text direction extension for Tiptap",
   "private": false,
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "check": "tsc",
-    "ci": "pnpm check && pnpm build",
-    "release": "pnpm check && pnpm build && changeset publish "
+  "type": "module",
+  "homepage": "https://github.com/amirhhashemi/tiptap-text-direction",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amirhhashemi/tiptap-text-direction"
   },
   "keywords": [
     "prosemirror",
     "tiptap",
     "right-to-left",
     "rtl",
-    "text-direction",
-    "farsi"
+    "text-direction"
   ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "check": "tsc",
+    "ci": "pnpm check && pnpm build",
+    "release": "pnpm check && pnpm build && changeset publish"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
+    "@tiptap/core": "^2.0.2",
+    "@tiptap/pm": "^2.0.2",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^2.0.0",
+    "@tiptap/pm": "^2.0.0"
   }
 }
