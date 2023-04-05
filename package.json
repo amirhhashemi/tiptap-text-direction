@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "description": "Text direction extension for Tiptap",
   "private": false,
+  "license": "MIT",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
