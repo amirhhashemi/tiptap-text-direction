@@ -1,6 +1,6 @@
 {
   "name": "tiptap-text-direction",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Text direction extension for Tiptap",
   "private": false,
   "main": "./dist/index.cjs",
