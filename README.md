@@ -71,7 +71,7 @@ https://user-images.githubusercontent.com/87268103/178113964-db7e21e4-05d9-4339-
 
 ### HTML Output
 
-In this example the `defaultDirection` is set to `rtl` (you have `dir="rtl"` in a parent element, most likely the `<html>` tag) so the extension didn't add `dir="rtl"` to `RTL` nodes. If you want to always have the `dir` attribute, set `defaultDirection` to `""`.
+In this example the `defaultDirection` is set to `rtl` (a parent element has `dir="rtl"`, most likely the `<html>` tag) so the extension didn't add `dir="rtl"` to `RTL` nodes. If you want to always have the `dir` attribute, set `defaultDirection` to `""`.
 
 ```html
 <p dir="ltr">Hello</p>
