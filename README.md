@@ -75,7 +75,8 @@ In this example the `defaultDirection` is set to `rtl` (a parent element has `di
 
 ```html
 <p dir="ltr">Hello</p>
-<p dir="ltr">سلام hello</p> <!-- This was `rtl` by default but we forced it be `ltr` -->
+<p dir="ltr">سلام hello</p>
+<!-- This was `rtl` by default but we forced it be `ltr` -->
 <ul>
   <li>
     <p dir="ltr">hello</p>
@@ -107,7 +108,7 @@ TextDirection.configure({
 
 ### directions
 
-A list of available options for the 'dir' attribute.
+A list of available options for the `dir` attribute.
 
 Default: `["ltr", "rtl"]`
 
@@ -146,3 +147,10 @@ Set the text direction of the selected nodes to the `defaultDirection`.
 ```javascript
 editor.commands.unsetTextDirection();
 ```
+
+## Keyboard shortcuts
+
+| Command                 | Windows/Linux        | macOS               |
+| ----------------------- | -------------------- | ------------------- |
+| setTextDirection("ltr") | `Ctrl` + `Alt` + `l` | `Cmd` + `Alt` + `l` |
+| setTextDirection("rtl") | `Ctrl` + `Alt` + `r` | `Cmd` + `Alt` + `r` |

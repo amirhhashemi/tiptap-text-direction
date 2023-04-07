@@ -129,6 +129,13 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
     };
   },
 
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Alt-l": () => this.editor.commands.setTextDirection("ltr"),
+      "Mod-Alt-r": () => this.editor.commands.setTextDirection("rtl"),
+    };
+  },
+
   addProseMirrorPlugins() {
     return [
       TextDirectionPlugin({
