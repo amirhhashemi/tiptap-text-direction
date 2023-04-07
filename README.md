@@ -75,7 +75,7 @@ In this example the `defaultDirection` is set to `rtl` (a parent element has `di
 
 ```html
 <p dir="ltr">Hello</p>
-<p>سلام hello</p>
+<p dir="ltr">سلام hello</p> <!-- This was `rtl` by default but we forced it be `ltr` -->
 <ul>
   <li>
     <p dir="ltr">hello</p>
