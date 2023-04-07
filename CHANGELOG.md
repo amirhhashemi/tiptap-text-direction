@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.2.0
+
+### Minor Changes
+
+- 867637b: Add keyboard shortcuts
+
 ## 0.1.2
 
 ### Patch Changes
