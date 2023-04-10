@@ -34,7 +34,12 @@ import TextDirection from "tiptap-text-direction";
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [StarterKit, TextDirection],
+    extensions: [
+      StarterKit,
+      TextDirection.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
   });
 
   return <EditorContent editor={editor} />;
