@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.2.1
+
+### Patch Changes
+
+- c6ec200: Update docs
+
 ## 0.2.0
 
 ### Minor Changes
