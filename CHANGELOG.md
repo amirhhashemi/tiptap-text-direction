@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.2.3
+
+### Patch Changes
+
+- 047a622: Calculate direction for pasted multi-line text
+
 ## 0.2.2
 
 ### Patch Changes
