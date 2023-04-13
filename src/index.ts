@@ -1,5 +1,5 @@
-import { Extension, findChildren } from "@tiptap/core";
-import { Plugin, PluginKey, Transaction } from "@tiptap/pm/state";
+import { Extension } from "@tiptap/core";
+import { Plugin, PluginKey } from "@tiptap/pm/state";
 
 const RTL = "\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC";
 const LTR =
@@ -26,26 +26,32 @@ export function getTextDirection(text: string): Direction | null {
 function TextDirectionPlugin({ types }: { types: string[] }) {
   return new Plugin({
     key: new PluginKey("textDirection"),
-    appendTransaction: (transactions, _oldState, newState) => {
-      const tr: Transaction = newState.tr;
-      let modified = false;
+    appendTransaction: (transactions, oldState, newState) => {
+      const docChanges =
+        transactions.some((transaction) => transaction.docChanged) &&
+        !oldState.doc.eq(newState.doc);
 
-      if (transactions.some((transaction) => transaction.docChanged)) {
-        const nodes = findChildren(newState.doc, (node) => {
-          return types.includes(node.type.name);
-        });
-        nodes.forEach((block) => {
-          const { node, pos } = block;
-          const { attrs, textContent } = node;
-          // don't change the `dir` if it already has one
-          if (attrs.dir && textContent.length !== 0) {
+      if (!docChanges) {
+        return;
+      }
+
+      let modified = false;
+      const tr = newState.tr;
+      const isPaste = transactions[0]?.getMeta("uiEvent");
+
+      newState.doc.descendants((node, pos) => {
+        if (types.includes(node.type.name)) {
+          if (
+            node.attrs.dir !== null &&
+            node.textContent.length > 0 &&
+            !isPaste
+          ) {
             return;
           }
-          const dir = getTextDirection(textContent);
-          tr.setNodeAttribute(pos, "dir", dir);
+          tr.setNodeAttribute(pos, "dir", getTextDirection(node.textContent));
           modified = true;
-        });
-      }
+        }
+      });
 
       return modified ? tr : null;
     },
