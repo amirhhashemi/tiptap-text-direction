@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.2.2
+
+### Patch Changes
+
+- ca219ed: Always calculate direction on paste
+
 ## 0.2.1
 
 ### Patch Changes
