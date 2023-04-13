@@ -37,15 +37,10 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 
       let modified = false;
       const tr = newState.tr;
-      const isPaste = transactions[0]?.getMeta("uiEvent");
 
       newState.doc.descendants((node, pos) => {
         if (types.includes(node.type.name)) {
-          if (
-            node.attrs.dir !== null &&
-            node.textContent.length > 0 &&
-            !isPaste
-          ) {
+          if (node.attrs.dir !== null && node.textContent.length > 0) {
             return;
           }
           tr.setNodeAttribute(pos, "dir", getTextDirection(node.textContent));
@@ -96,9 +91,8 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
         types: this.options.types,
         attributes: {
           dir: {
-            default: this.options.defaultDirection,
-            parseHTML: (element) =>
-              element.dir || this.options.defaultDirection,
+            default: null,
+            parseHTML: (element) => element.dir || null,
             renderHTML: (attributes) => {
               if (attributes.dir === this.options.defaultDirection) {
                 return {};
