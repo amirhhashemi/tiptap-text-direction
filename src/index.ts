@@ -14,6 +14,9 @@ type Direction = "ltr" | "rtl";
 
 // Source: https://github.com/facebook/lexical/blob/429e3eb5b5a244026fa4776650aabe3c8e17536b/packages/lexical/src/LexicalUtils.ts#L163
 export function getTextDirection(text: string): Direction | null {
+  if (text.length == 0) {
+    return null;
+  }
   if (RTL_REGEX.test(text)) {
     return "rtl";
   }
