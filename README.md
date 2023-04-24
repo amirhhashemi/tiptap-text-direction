@@ -111,18 +111,6 @@ TextDirection.configure({
 });
 ```
 
-### directions
-
-A list of available options for the `dir` attribute.
-
-Default: `["ltr", "rtl", "auto"]`
-
-```javascript
-TextDirection.configure({
-  directions: ["ltr", "rtl"],
-});
-```
-
 ### defaultDirection
 
 The default direction. The `dir` attribute won't be added to the nodes that have the same direction as the `defaultDirection`

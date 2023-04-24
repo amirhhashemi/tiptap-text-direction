@@ -10,6 +10,8 @@ const LTR =
 const RTL_REGEX = new RegExp("^[^" + LTR + "]*[" + RTL + "]");
 const LTR_REGEX = new RegExp("^[^" + RTL + "]*[" + LTR + "]");
 
+const validDirections = ["ltr", "rtl", "auto"];
+
 type Direction = "ltr" | "rtl";
 
 // Source: https://github.com/facebook/lexical/blob/429e3eb5b5a244026fa4776650aabe3c8e17536b/packages/lexical/src/LexicalUtils.ts#L163
@@ -57,7 +59,6 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 
 export interface TextDirectionOptions {
   types: string[];
-  directions: string[];
   defaultDirection: string | null;
 }
 
@@ -82,7 +83,6 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
   addOptions() {
     return {
       types: [],
-      directions: ["ltr", "rtl", "auto"],
       defaultDirection: null,
     };
   },
@@ -112,7 +112,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
       setTextDirection:
         (direction) =>
         ({ commands }) => {
-          if (!this.options.directions.includes(direction)) {
+          if (!validDirections.includes(direction)) {
             return false;
           }
 
