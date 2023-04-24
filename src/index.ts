@@ -94,7 +94,8 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
         attributes: {
           dir: {
             default: null,
-            parseHTML: (element) => element.dir || null,
+            parseHTML: (element) =>
+              element.dir || this.options.defaultDirection,
             renderHTML: (attributes) => {
               if (attributes.dir === this.options.defaultDirection) {
                 return {};
