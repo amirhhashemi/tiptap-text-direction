@@ -115,11 +115,11 @@ TextDirection.configure({
 
 A list of available options for the `dir` attribute.
 
-Default: `["ltr", "rtl"]`
+Default: `["ltr", "rtl", "auto"]`
 
 ```javascript
 TextDirection.configure({
-  directions: ["ltr", "rtl", "auto"],
+  directions: ["ltr", "rtl"],
 });
 ```
 
