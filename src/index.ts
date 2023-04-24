@@ -10,12 +10,8 @@ const LTR =
 const RTL_REGEX = new RegExp("^[^" + LTR + "]*[" + RTL + "]");
 const LTR_REGEX = new RegExp("^[^" + RTL + "]*[" + LTR + "]");
 
-const validDirections = ["ltr", "rtl", "auto"];
-
-type Direction = "ltr" | "rtl";
-
 // Source: https://github.com/facebook/lexical/blob/429e3eb5b5a244026fa4776650aabe3c8e17536b/packages/lexical/src/LexicalUtils.ts#L163
-export function getTextDirection(text: string): Direction | null {
+export function getTextDirection(text: string): "ltr" | "rtl" | null {
   if (text.length == 0) {
     return null;
   }
@@ -27,6 +23,10 @@ export function getTextDirection(text: string): Direction | null {
   }
   return null;
 }
+
+const validDirections = ["ltr", "rtl", "auto"] as const;
+
+type Direction = (typeof validDirections)[number];
 
 function TextDirectionPlugin({ types }: { types: string[] }) {
   return new Plugin({
@@ -57,24 +57,24 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
   });
 }
 
-export interface TextDirectionOptions {
-  types: string[];
-  defaultDirection: string | null;
-}
-
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     textDirection: {
       /**
        * Set the text direction attribute
        */
-      setTextDirection: (direction: string) => ReturnType;
+      setTextDirection: (direction: Direction) => ReturnType;
       /**
        * Unset the text direction attribute
        */
       unsetTextDirection: () => ReturnType;
     };
   }
+}
+
+export interface TextDirectionOptions {
+  types: string[];
+  defaultDirection: Direction | null;
 }
 
 export const TextDirection = Extension.create<TextDirectionOptions>({
@@ -110,7 +110,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
   addCommands() {
     return {
       setTextDirection:
-        (direction) =>
+        (direction: Direction) =>
         ({ commands }) => {
           if (!validDirections.includes(direction)) {
             return false;
