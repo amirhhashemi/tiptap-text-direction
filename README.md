@@ -1,14 +1,12 @@
-This extension automatically adds the `dir` attribute to a configurable list of nodes. The direction (`ltr` or `rtl`) is detected based on the node's content.
+This extension automatically detects the direction of a configurable list of nodes and adds `dir="ltr"` or `dir="rtl"` to them.
 
-**Why not use `dir="auto"`?**
+**Why not `dir="auto"`?**
 
 `dir="auto"` changes the text direction based on the element's content too, so why not use that?
 
 1. It doesn't give you granular control over the direction. For example, if you want to have different styles based on the direction you can't do that with `dir="auto"`. There is `:dir()` pseudo-class that can help you in this situation but it's only supported in Firefox.
 
-2. You can't override it. `dir="auto"` uses the first character of the element to determine the direction and you can't change it unless you explicitly define the direction using `dir="ltr|rtl"`.
-
-3. You have to add `dir="auto"` to every element and that increases the output HTML size. While this extension only adds the `dir` when needed.
+2. You can't override it. `dir="auto"` uses the first character of the element to determine the direction and you can't change it unless you explicitly set the direction with `dir="ltr|rtl"`.
 
 ## Installation
 
@@ -25,7 +23,7 @@ pnpm install tiptap-text-direction
 
 ## Usage
 
-In this example, I used React but it works with any framework that Tiptap supports.
+In this example I used React but it works with any framework that Tiptap supports.
 
 ```tsx
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -76,7 +74,7 @@ https://user-images.githubusercontent.com/87268103/178113964-db7e21e4-05d9-4339-
 
 ### HTML Output
 
-In this example the `defaultDirection` is set to `rtl` (a parent element has `dir="rtl"`, in this case the `<html>` tag) so the extension didn't add `dir="rtl"` to `RTL` nodes. If you want to always have the `dir` attribute, set `defaultDirection` to `""`.
+In this example the `defaultDirection` is set to `rtl` (also a parent element has `dir="rtl"`, in this case the `<html>` tag) so the extension didn't add `dir="rtl"` to RTL nodes.
 
 ```html
 <p dir="ltr">Hello</p>
@@ -97,7 +95,7 @@ In this example the `defaultDirection` is set to `rtl` (a parent element has `di
 <h2 dir="ltr">hello</h2>
 ```
 
-## Settings
+## Options
 
 ### types
 
@@ -113,7 +111,7 @@ TextDirection.configure({
 
 ### defaultDirection
 
-The default direction. The `dir` attribute won't be added to the nodes that have the same direction as the `defaultDirection`
+In case you have set the text direction in a parent element of the editor (most likely the `<html>` element), you can set `defaultDirection` to avoid adding the `dir` attribute to elements that have the same direction as the `defaultDirection` because it's not needed. It can reduce the HTML output's size.
 
 Default: `null`
 
@@ -135,7 +133,7 @@ editor.commands.setTextDirection("rtl");
 
 ### unsetTextDirection()
 
-Set the text direction of the selected nodes to the `defaultDirection`.
+Unset the text direction back to the `defaultDirection`.
 
 ```javascript
 editor.commands.unsetTextDirection();
