@@ -1,5 +1,14 @@
 # tiptap-text-direction
 
+## 0.3.0
+
+### Minor Changes
+
+- 0b270ef: BREAKING CHANGE: Remove "directions" option
+- 0a49759: BREAKING CHANGE: Update default value of `defaultDirection` to `null`
+- 856e312: BREAKING CHANGE: Allow "auto" direction by default
+- 21ed65c: BREAKING CHANGE: Don't export "RTL_REGEX" and "LTR_REGEX"
+
 ## 0.2.3
 
 ### Patch Changes
