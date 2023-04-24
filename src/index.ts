@@ -58,7 +58,7 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 export interface TextDirectionOptions {
   types: string[];
   directions: string[];
-  defaultDirection: string;
+  defaultDirection: string | null;
 }
 
 declare module "@tiptap/core" {
@@ -83,7 +83,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
     return {
       types: [],
       directions: ["ltr", "rtl", "auto"],
-      defaultDirection: "ltr",
+      defaultDirection: null,
     };
   },
 

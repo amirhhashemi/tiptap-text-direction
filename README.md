@@ -127,7 +127,7 @@ TextDirection.configure({
 
 The default direction. The `dir` attribute won't be added to the nodes that have the same direction as the `defaultDirection`
 
-Default: `ltr`
+Default: `null`
 
 ```javascript
 TextDirection.configure({
