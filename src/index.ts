@@ -7,8 +7,8 @@ const LTR =
   "\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C" +
   "\uFE00-\uFE6F\uFEFD-\uFFFF";
 
-export const RTL_REGEX = new RegExp("^[^" + LTR + "]*[" + RTL + "]");
-export const LTR_REGEX = new RegExp("^[^" + RTL + "]*[" + LTR + "]");
+const RTL_REGEX = new RegExp("^[^" + LTR + "]*[" + RTL + "]");
+const LTR_REGEX = new RegExp("^[^" + RTL + "]*[" + LTR + "]");
 
 type Direction = "ltr" | "rtl";
 
