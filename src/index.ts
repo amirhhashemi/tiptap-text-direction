@@ -30,10 +30,9 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
   return new Plugin({
     key: new PluginKey("textDirection"),
     appendTransaction: (transactions, oldState, newState) => {
-      const docChanges =
-        transactions.some((transaction) => transaction.docChanged) &&
-        !oldState.doc.eq(newState.doc);
-
+      const docChanges = transactions.some(
+        (transaction) => transaction.docChanged
+      );
       if (!docChanges) {
         return;
       }
