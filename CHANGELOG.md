@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.3.1
+
+### Patch Changes
+
+- 1e0e025: Restore marks in new line
+
 ## 0.3.0
 
 ### Minor Changes
