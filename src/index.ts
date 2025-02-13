@@ -41,6 +41,7 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 
       let modified = false;
       const tr = newState.tr;
+      tr.setMeta('addToHistory', false)
 
       newState.doc.descendants((node, pos) => {
         if (types.includes(node.type.name)) {
