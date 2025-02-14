@@ -33,7 +33,7 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
     key: new PluginKey("textDirection"),
     appendTransaction: (transactions, oldState, newState) => {
       const docChanges = transactions.some(
-        (transaction) => transaction.docChanged
+        (transaction) => transaction.docChanged,
       );
       if (!docChanges) {
         return;
@@ -41,7 +41,7 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 
       let modified = false;
       const tr = newState.tr;
-      tr.setMeta('addToHistory', false)
+      tr.setMeta("addToHistory", false);
 
       newState.doc.descendants((node, pos) => {
         if (types.includes(node.type.name)) {
@@ -124,7 +124,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
           }
 
           return this.options.types.every((type) =>
-            commands.updateAttributes(type, { dir: direction })
+            commands.updateAttributes(type, { dir: direction }),
           );
         },
 
@@ -132,7 +132,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
         () =>
         ({ commands }) => {
           return this.options.types.every((type) =>
-            commands.resetAttributes(type, "dir")
+            commands.resetAttributes(type, "dir"),
           );
         },
     };
