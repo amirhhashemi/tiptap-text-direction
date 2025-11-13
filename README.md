@@ -1,5 +1,9 @@
 This extension automatically detects the direction of a configurable list of nodes and adds `dir="ltr"` or `dir="rtl"` to them.
 
+## Compatibility
+
+This extension supports both Tiptap v2 and v3.
+
 **Why not `dir="auto"`?**
 
 `dir="auto"` changes the text direction based on the element's content too, so why not use that?
