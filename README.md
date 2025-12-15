@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> TipTap now includes [built-in support for RTL content](https://tiptap.dev/docs/examples/basics/text-direction). This library will no longer be maintained, and I encourage everyone to use the built-in feature.
+
+
 This extension automatically detects the direction of a configurable list of nodes and adds `dir="ltr"` or `dir="rtl"` to them.
 
 **Why not `dir="auto"`?**
