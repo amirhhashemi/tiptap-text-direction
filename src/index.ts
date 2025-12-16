@@ -1,5 +1,10 @@
-import { Extension, combineTransactionSteps, getChangedRanges, findChildrenInRange } from "@tiptap/core";
-import { Plugin, PluginKey, Transaction } from "@tiptap/pm/state";
+import {
+  Extension,
+  combineTransactionSteps,
+  getChangedRanges,
+  findChildrenInRange,
+} from "@tiptap/core";
+import { Plugin, PluginKey, type Transaction } from "@tiptap/pm/state";
 
 const RTL = "\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC";
 const LTR =
@@ -7,12 +12,12 @@ const LTR =
   "\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C" +
   "\uFE00-\uFE6F\uFEFD-\uFFFF";
 
-const RTL_REGEX = new RegExp("^[^" + LTR + "]*[" + RTL + "]");
-const LTR_REGEX = new RegExp("^[^" + RTL + "]*[" + LTR + "]");
+const RTL_REGEX = new RegExp(`^[^${LTR}]*[${RTL}]`);
+const LTR_REGEX = new RegExp(`^[^${RTL}]*[${LTR}]`);
 
 // Source: https://github.com/facebook/lexical/blob/429e3eb5b5a244026fa4776650aabe3c8e17536b/packages/lexical/src/LexicalUtils.ts#L163
 export function getTextDirection(text: string): "ltr" | "rtl" | null {
-  if (text.length == 0) {
+  if (text.length === 0) {
     return null;
   }
   if (RTL_REGEX.test(text)) {
@@ -33,7 +38,7 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
     key: new PluginKey("textDirection"),
     appendTransaction: (transactions, oldState, newState) => {
       const docChanges = transactions.some(
-        (transaction) => transaction.docChanged,
+        (transaction) => transaction.docChanged
       );
       if (!docChanges) {
         return;
@@ -41,19 +46,24 @@ function TextDirectionPlugin({ types }: { types: string[] }) {
 
       let modified = false;
       const { tr } = newState;
-      const transform = combineTransactionSteps(oldState.doc, transactions as Transaction[]);
+      const transform = combineTransactionSteps(
+        oldState.doc,
+        transactions as Transaction[]
+      );
       const changes = getChangedRanges(transform);
 
       tr.setMeta("addToHistory", false);
 
       changes.forEach(({ newRange }) => {
-        const nodes = findChildrenInRange(newState.doc, newRange, node => types.includes(node.type.name))
+        const nodes = findChildrenInRange(newState.doc, newRange, (node) =>
+          types.includes(node.type.name)
+        );
 
         nodes.forEach(({ node, pos }) => {
           if (node.attrs.dir !== null && node.textContent.length > 0) {
             return;
           }
-          const newTextDirection = getTextDirection(node.textContent)
+          const newTextDirection = getTextDirection(node.textContent);
           if (node.attrs.dir === newTextDirection) {
             return;
           }
@@ -134,7 +144,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
           }
 
           return this.options.types.every((type) =>
-            commands.updateAttributes(type, { dir: direction }),
+            commands.updateAttributes(type, { dir: direction })
           );
         },
 
@@ -142,7 +152,7 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
         () =>
         ({ commands }) => {
           return this.options.types.every((type) =>
-            commands.resetAttributes(type, "dir"),
+            commands.resetAttributes(type, "dir")
           );
         },
     };
