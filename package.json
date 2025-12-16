@@ -1,6 +1,6 @@
 {
 	"name": "tiptap-text-direction",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"description": "Text direction extension for Tiptap",
 	"license": "MIT",
 	"homepage": "https://github.com/amirhhashemi/tiptap-text-direction",
