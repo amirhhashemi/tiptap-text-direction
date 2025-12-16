@@ -6,19 +6,53 @@ import {
 } from "@tiptap/core";
 import { type Transaction, Plugin, PluginKey } from "@tiptap/pm/state";
 
+/**
+ * Unicode character ranges commonly associated with RTL scripts.
+ *
+ * Includes Hebrew, Arabic, Syriac, Thaana, and related presentation forms.
+ * Used for content-based direction detection.
+ */
 const RTL_CHAR_RANGE = "\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC";
+
+/**
+ * Unicode character ranges commonly associated with LTR scripts.
+ *
+ * Includes Latin, extended Latin, and a variety of other non-RTL ranges.
+ * Used for content-based direction detection.
+ */
 const LTR_CHAR_RANGE =
 	"A-Za-z\u00C0-\u00D6\u00D8-\u00F6" +
 	"\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C" +
 	"\uFE00-\uFE6F\uFEFD-\uFFFF";
 
+/**
+ * Regex that detects whether a string contains an RTL character before any strong LTR character.
+ */
 const RTL_REGEX = new RegExp(`^[^${LTR_CHAR_RANGE}]*[${RTL_CHAR_RANGE}]`);
+
+/**
+ * Regex that detects whether a string contains an LTR character before any strong RTL character.
+ */
 const LTR_REGEX = new RegExp(`^[^${RTL_CHAR_RANGE}]*[${LTR_CHAR_RANGE}]`);
 
+/**
+ * All supported direction values.
+ */
 const DIRECTIONS = ["ltr", "rtl", "auto"] as const;
 
+/**
+ * Allowed text direction values.
+ */
 type Direction = (typeof DIRECTIONS)[number];
 
+/**
+ * Detect the text direction of a string based on its content.
+ *
+ * @param text - The text to analyze
+ * @returns `"rtl"` if the text starts with a RTL character,
+ *          `"ltr"` if the text starts with a LTR character,
+ *          `null` if direction cannot be determined (e.g. empty string)
+ */
 export function getTextDirection(text: string): "ltr" | "rtl" | null {
 	if (text.length === 0) {
 		return null;
@@ -32,6 +66,12 @@ export function getTextDirection(text: string): "ltr" | "rtl" | null {
 	return null;
 }
 
+/**
+ * ProseMirror plugin that automatically applies a `dir` attribute to configured node types when their content changes.
+ *
+ * @param options - Plugin configuration
+ * @param options.types - Node type names that should receive direction updates
+ */
 function TextDirectionPlugin({ types }: { types: Array<string> }) {
 	return new Plugin({
 		key: new PluginKey("textDirection"),
@@ -86,22 +126,48 @@ declare module "@tiptap/core" {
 	interface Commands<ReturnType> {
 		textDirection: {
 			/**
-			 * Set the text direction attribute
+			 * Explicitly set the text direction for the selected nodes.
+			 *
+			 * This overrides automatic detection.
+			 *
+			 * @param direction - `"ltr"` or `"rtl"` or `"auto"`
 			 */
 			setTextDirection: (direction: Direction) => ReturnType;
+
 			/**
-			 * Unset the text direction attribute
+			 * Remove the explicit text direction attribute.
 			 */
 			unsetTextDirection: () => ReturnType;
 		};
 	}
 }
 
+/**
+ * Configuration options for the TextDirection extension.
+ */
 export interface TextDirectionOptions {
+	/**
+	 * Node types that should receive a `dir` attribute.
+	 *
+	 * Example: `["paragraph", "heading"]`
+	 */
 	types: Array<string>;
+
+	/**
+	 * Default direction inherited from a parent element (e.g. `<html dir="rtl">`).
+	 *
+	 * When set, matching directions will not be rendered as explicit attributes.
+	 */
 	defaultDirection: Direction | null;
 }
 
+/**
+ * Tiptap extension that automatically detects and applies explicit text direction (`dir="ltr"` / `dir="rtl"`) to nodes.
+ *
+ * Unlike Tiptap’s built-in RTL support, this extension:
+ * - Uses JavaScript-based language detection
+ * - Avoids `dir="auto"`
+ */
 export const TextDirection = Extension.create<TextDirectionOptions>({
 	name: "textDirection",
 
