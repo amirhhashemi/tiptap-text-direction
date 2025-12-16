@@ -54,20 +54,20 @@ function TextDirectionPlugin({ types }: { types: Array<string> }) {
 			tr.setMeta("addToHistory", false);
 
 			for (const { newRange } of changes) {
-				const nodes = findChildrenInRange(newState.doc, newRange, (node) =>
-					types.includes(node.type.name),
-				);
+				const nodes = findChildrenInRange(newState.doc, newRange, (node) => {
+					return types.includes(node.type.name);
+				});
 
 				for (const { node, pos } of nodes) {
 					if (node.attrs.dir !== null && node.textContent.length > 0) {
-						return;
+						continue;
 					}
 					const newTextDirection = getTextDirection(node.textContent);
 					if (node.attrs.dir === newTextDirection) {
-						return;
+						continue;
 					}
 
-					const marks = tr.storedMarks || [];
+					const marks = tr.storedMarks ?? [];
 					tr.setNodeAttribute(pos, "dir", newTextDirection);
 					// `tr.setNodeAttribute` resets the stored marks so we'll restore them
 					for (const mark of marks) {
@@ -119,10 +119,18 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
 				attributes: {
 					dir: {
 						default: null,
-						parseHTML: (element) =>
-							element.dir || this.options.defaultDirection,
+						parseHTML: (element) => {
+							const dir = element.getAttribute("dir");
+							if (DIRECTIONS.includes(dir as Direction)) {
+								return dir;
+							}
+							return this.options.defaultDirection;
+						},
 						renderHTML: (attributes) => {
-							if (attributes.dir === this.options.defaultDirection) {
+							if (
+								!attributes.dir ||
+								attributes.dir === this.options.defaultDirection
+							) {
 								return {};
 							}
 							return { dir: attributes.dir };
