@@ -1,54 +1,54 @@
 {
-  "name": "tiptap-text-direction",
-  "version": "0.3.2",
-  "description": "Text direction extension for Tiptap",
-  "license": "MIT",
-  "homepage": "https://github.com/amirhhashemi/tiptap-text-direction",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/amirhhashemi/tiptap-text-direction"
-  },
-  "keywords": [
-    "prosemirror",
-    "tiptap",
-    "right-to-left",
-    "rtl",
-    "text-direction"
-  ],
-  "private": false,
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
-  "exports": {
-    ".": {
-      "types": {
-        "import": "./dist/index.d.mts",
-        "require": "./dist/index.d.cts"
-      },
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "scripts": {
-    "build": "tsdown",
-    "typecheck": "tsc --noEmit",
-    "release": "pnpm check && pnpm build && changeset publish",
-    "format": "biome format",
-    "format.write": "biome format --write",
-    "lint": "biome lint",
-    "lint.write": "biome lint --write"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.3.9",
-    "@changesets/cli": "^2.29.8",
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/pm": "^3.13.0",
-    "tsdown": "^0.18.0",
-    "typescript": "^5.9.3"
-  },
-  "peerDependencies": {
-    "@tiptap/core": "^2.0.0 || ^3.0.0",
-    "@tiptap/pm": "^2.0.0 || ^3.0.0"
-  }
+	"name": "tiptap-text-direction",
+	"version": "0.3.2",
+	"description": "Text direction extension for Tiptap",
+	"license": "MIT",
+	"homepage": "https://github.com/amirhhashemi/tiptap-text-direction",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amirhhashemi/tiptap-text-direction"
+	},
+	"keywords": [
+		"prosemirror",
+		"tiptap",
+		"right-to-left",
+		"rtl",
+		"text-direction"
+	],
+	"private": false,
+	"type": "module",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"exports": {
+		".": {
+			"types": {
+				"import": "./dist/index.d.mts",
+				"require": "./dist/index.d.cts"
+			},
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit",
+		"release": "pnpm check && pnpm build && changeset publish",
+		"format": "biome format",
+		"format.write": "biome format --write",
+		"lint": "biome lint",
+		"lint.write": "biome lint --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.9",
+		"@changesets/cli": "^2.29.8",
+		"@tiptap/core": "^3.13.0",
+		"@tiptap/pm": "^3.13.0",
+		"tsdown": "^0.18.0",
+		"typescript": "^5.9.3"
+	},
+	"peerDependencies": {
+		"@tiptap/core": "^2.0.0 || ^3.0.0",
+		"@tiptap/pm": "^2.0.0 || ^3.0.0"
+	}
 }
