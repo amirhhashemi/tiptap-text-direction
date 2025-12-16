@@ -1,5 +1,12 @@
 # tiptap-text-direction
 
+## 0.3.3
+
+### Patch Changes
+
+- b739739: This release introduces support for TipTap 3.0, adds the ability to set or unset text direction within a range or at a specific position, and includes minor bug fixes.
+- b011ea3: Prevent automatic direction changes from being added to history
+
 ## 0.3.1
 
 ### Patch Changes
