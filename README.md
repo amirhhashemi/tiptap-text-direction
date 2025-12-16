@@ -117,20 +117,34 @@ TextDirection.configure({
 
 ## Commands
 
-### `setTextDirection(direction)`
+### `setTextDirection(direction, position?)`
 
-Explicitly set the text direction of the currently selected nodes.
+Explicitly set the text direction of matching nodes within a range or the current selection.
 
 ```ts
+// Apply to the current selection
 editor.commands.setTextDirection("rtl");
+
+// Apply to a specific range
+editor.commands.setTextDirection("ltr", { from: 0, to: 10 });
+
+// Apply at a specific document position
+editor.commands.setTextDirection("rtl", 42);
 ```
 
-### `unsetTextDirection()`
+### `unsetTextDirection(position?)`
 
-Remove the explicit direction and revert back to `defaultDirection`.
+Remove the explicit text direction attribute from matching nodes and revert back to `defaultDirection`.
 
 ```ts
+// Remove from the current selection
 editor.commands.unsetTextDirection();
+
+// Remove from a specific range
+editor.commands.unsetTextDirection({ from: 0, to: 10 });
+
+// Remove at a specific document position
+editor.commands.unsetTextDirection(42);
 ```
 
 ## Keyboard shortcuts

@@ -1,4 +1,5 @@
 import {
+	type Range,
 	Extension,
 	combineTransactionSteps,
 	getChangedRanges,
@@ -126,18 +127,31 @@ declare module "@tiptap/core" {
 	interface Commands<ReturnType> {
 		textDirection: {
 			/**
-			 * Explicitly set the text direction for the selected nodes.
+			 * Explicitly set the text direction for matching nodes within a range
+			 * or the current selection.
 			 *
-			 * This overrides automatic detection.
+			 * @param direction - The direction to set: `"ltr"`, `"rtl"`, or `"auto"`
+			 * @param position - Optional document position or `{ from, to }` range.
+			 * If omitted, the current selection is used.
 			 *
-			 * @param direction - `"ltr"` or `"rtl"` or `"auto"`
+			 * @example editor.commands.setTextDirection("rtl")
+			 * @example editor.commands.setTextDirection("ltr", { from: 0, to: 10 })
 			 */
-			setTextDirection: (direction: Direction) => ReturnType;
+			setTextDirection: (
+				direction: Direction,
+				position?: number | Range,
+			) => ReturnType;
 
 			/**
-			 * Remove the explicit text direction attribute.
+			 * Remove the explicit text direction attribute from matching nodes.
+			 *
+			 * @param position - Optional document position or `{ from, to }` range.
+			 * If omitted, the current selection is used.
+			 *
+			 * @example editor.commands.unsetTextDirection()
+			 * @example editor.commands.unsetTextDirection({ from: 0, to: 10 })
 			 */
-			unsetTextDirection: () => ReturnType;
+			unsetTextDirection: (position?: number | Range) => ReturnType;
 		};
 	}
 }
@@ -209,25 +223,72 @@ export const TextDirection = Extension.create<TextDirectionOptions>({
 
 	addCommands() {
 		return {
-			setTextDirection:
-				(direction: Direction) =>
-				({ commands }) => {
-					if (!DIRECTIONS.includes(direction)) {
-						return false;
+			setTextDirection: (direction: Direction, position?: number | Range) => {
+				return ({ tr, state, dispatch }) => {
+					const { selection } = state;
+					let from: number;
+					let to: number;
+
+					if (typeof position === "number") {
+						from = position;
+						to = position;
+					} else if (position && "from" in position && "to" in position) {
+						from = position.from;
+						to = position.to;
+					} else {
+						from = selection.from;
+						to = selection.to;
 					}
 
-					return this.options.types.every((type) =>
-						commands.updateAttributes(type, { dir: direction }),
-					);
-				},
+					if (dispatch) {
+						const nodes = findChildrenInRange(tr.doc, { from, to }, (node) => {
+							return this.options.types.includes(node.type.name);
+						});
 
-			unsetTextDirection:
-				() =>
-				({ commands }) => {
-					return this.options.types.every((type) =>
-						commands.resetAttributes(type, "dir"),
-					);
-				},
+						for (const { node, pos } of nodes) {
+							tr.setNodeMarkup(pos, undefined, {
+								...node.attrs,
+								dir: direction,
+							});
+						}
+					}
+
+					return true;
+				};
+			},
+
+			unsetTextDirection: (position?: number | Range) => {
+				return ({ tr, state, dispatch }) => {
+					const { selection } = state;
+					let from: number;
+					let to: number;
+
+					if (typeof position === "number") {
+						from = position;
+						to = position;
+					} else if (position && "from" in position && "to" in position) {
+						from = position.from;
+						to = position.to;
+					} else {
+						from = selection.from;
+						to = selection.to;
+					}
+
+					if (dispatch) {
+						const nodes = findChildrenInRange(tr.doc, { from, to }, (node) => {
+							return this.options.types.includes(node.type.name);
+						});
+
+						for (const { node, pos } of nodes) {
+							const newAttrs = { ...node.attrs };
+							delete newAttrs.dir;
+							tr.setNodeMarkup(pos, undefined, newAttrs);
+						}
+					}
+
+					return true;
+				};
+			},
 		};
 	},
 
