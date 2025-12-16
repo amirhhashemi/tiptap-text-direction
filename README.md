@@ -3,13 +3,13 @@ It is useful when working with mixed-direction content (e.g. English + Arabic/Pe
 It is compatible with Tiptap v2 and v3.
 
 > [!NOTE]
-> 
-> **Differences with the built-in feature**
-> 
-> TipTap has recently added [built-in support](https://tiptap.dev/docs/examples/basics/text-direction) for RTL text.
-> However, this feature relies on using `dir="auto"` for automatic direction detection. 
 >
-> In contrast, this extension detects the language using JavaScript and explicitly sets the direction to either `dir="ltr"` or `dir="rtl"`. 
+> **Differences with the built-in feature**
+>
+> TipTap has recently added [built-in support](https://tiptap.dev/docs/examples/basics/text-direction) for RTL text.
+> However, this feature relies on using `dir="auto"` for automatic direction detection.
+>
+> In contrast, this extension detects the language using JavaScript and explicitly sets the direction to either `dir="ltr"` or `dir="rtl"`.
 >
 > This approach has two main advantages:
 >
@@ -19,7 +19,6 @@ It is compatible with Tiptap v2 and v3.
 >    For instance, you can target elements based on their text direction, which is not possible with `dir="auto"`.
 >
 > That said, the built-in feature is a perfectly acceptable option if you don't need these specific functionalities.
-
 
 ## Installation
 
@@ -47,16 +46,16 @@ import StarterKit from "@tiptap/starter-kit";
 import TextDirection from "tiptap-text-direction";
 
 const Tiptap = () => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextDirection.configure({
-        types: ["heading", "paragraph"],
-      }),
-    ],
-  });
+	const editor = useEditor({
+		extensions: [
+			StarterKit,
+			TextDirection.configure({
+				types: ["heading", "paragraph"],
+			}),
+		],
+	});
 
-  return <EditorContent editor={editor} />;
+	return <EditorContent editor={editor} />;
 };
 ```
 
@@ -72,9 +71,8 @@ Since direction is explicitly set, you can easily style content using attribute 
 .ProseMirror h4[dir="rtl"],
 .ProseMirror h5[dir="rtl"],
 .ProseMirror h6[dir="rtl"] {
-text-align: right;
+	text-align: right;
 }
-
 
 .ProseMirror p[dir="ltr"],
 .ProseMirror h1[dir="ltr"],
@@ -83,7 +81,7 @@ text-align: right;
 .ProseMirror h4[dir="ltr"],
 .ProseMirror h5[dir="ltr"],
 .ProseMirror h6[dir="ltr"] {
-text-align: left;
+	text-align: left;
 }
 ```
 
@@ -97,7 +95,7 @@ A list of node types that should receive the `dir` attribute.
 
 ```ts
 TextDirection.configure({
-  types: ["heading", "paragraph"],
+	types: ["heading", "paragraph"],
 });
 ```
 
@@ -111,7 +109,7 @@ This helps keep the generated HTML smaller and cleaner.
 
 ```ts
 TextDirection.configure({
-  defaultDirection: "rtl",
+	defaultDirection: "rtl",
 });
 ```
 
