@@ -1,33 +1,45 @@
-This extension automatically detects the direction of a configurable list of nodes and adds `dir="ltr"` or `dir="rtl"` to them.
+This extension automatically detects text direction (LTR / RTL) for configurable Tiptap node types and applies the appropriate `dir="ltr"` or `dir="rtl"` attribute.
+It is useful when working with mixed-direction content (e.g. English + Arabic/Persian/Hebrew) and when you need **explicit, overridable direction control** at the node level.
+It is compatible with Tiptap v2 and v3.
 
-## Compatibility
+> [!NOTE]
+> 
+> **Differences with the built-in feature**
+> 
+> TipTap has recently added [built-in support](https://tiptap.dev/docs/examples/basics/text-direction) for RTL text.
+> However, this feature relies on using `dir="auto"` for automatic direction detection. 
+>
+> In contrast, this extension detects the language using JavaScript and explicitly sets the direction to either `dir="ltr"` or `dir="rtl"`. 
+>
+> This approach has two main advantages:
+>
+> 1. It provides clearer information about the actual direction of the text nodes, especially when saving documents on the server.
+>    The `dir="auto"` option can be ambiguous and depends on the browser's interpretation.
+> 2. It allows for more granular control when applying styles.
+>    For instance, you can target elements based on their text direction, which is not possible with `dir="auto"`.
+>
+> That said, the built-in feature is a perfectly acceptable option if you don't need these specific functionalities.
 
-This extension supports both Tiptap v2 and v3.
-
-**Why not `dir="auto"`?**
-
-`dir="auto"` changes the text direction based on the element's content too, so why not use that?
-
-1. It doesn't give you granular control over the direction. For example, if you want to have different styles based on the direction you can't do that with `dir="auto"`. There is `:dir()` pseudo-class that can help you in this situation but it's only supported in Firefox.
-
-2. You can't override it. `dir="auto"` uses the first character of the element to determine the direction and you can't change it unless you explicitly set the direction with `dir="ltr|rtl"`.
 
 ## Installation
 
 ```bash
+# pnpm
+pnpm install tiptap-text-direction
+
 # npm
 npm install tiptap-text-direction
 
+# bun
+bun install tiptap-text-direction
+
 # yarn
 yarn add tiptap-text-direction
-
-# pnpm
-pnpm install tiptap-text-direction
 ```
 
 ## Usage
 
-In this example I used React but it works with any framework that Tiptap supports.
+Below is a React example, but the extension works with any framework supported by Tiptap.
 
 ```tsx
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -48,7 +60,9 @@ const Tiptap = () => {
 };
 ```
 
-You might also want to change the text alignment based on the `dir` attribute:
+## Styling based on direction
+
+Since direction is explicitly set, you can easily style content using attribute selectors:
 
 ```css
 .ProseMirror p[dir="rtl"],
@@ -58,8 +72,9 @@ You might also want to change the text alignment based on the `dir` attribute:
 .ProseMirror h4[dir="rtl"],
 .ProseMirror h5[dir="rtl"],
 .ProseMirror h6[dir="rtl"] {
-  text-align: right;
+text-align: right;
 }
+
 
 .ProseMirror p[dir="ltr"],
 .ProseMirror h1[dir="ltr"],
@@ -68,58 +83,33 @@ You might also want to change the text alignment based on the `dir` attribute:
 .ProseMirror h4[dir="ltr"],
 .ProseMirror h5[dir="ltr"],
 .ProseMirror h6[dir="ltr"] {
-  text-align: left;
+text-align: left;
 }
-```
-
-### Demo
-
-https://user-images.githubusercontent.com/87268103/178113964-db7e21e4-05d9-4339-9efc-84421c0b3b3f.mp4
-
-### HTML Output
-
-In this example the `defaultDirection` is set to `rtl` (also a parent element has `dir="rtl"`, in this case the `<html>` tag) so the extension didn't add `dir="rtl"` to RTL nodes.
-
-```html
-<p dir="ltr">Hello</p>
-<p dir="ltr">سلام hello</p>
-<!-- This was `rtl` by default but we forced it be `ltr` -->
-<ul>
-  <li>
-    <p dir="ltr">hello</p>
-  </li>
-  <li>
-    <p>سلام</p>
-  </li>
-  <li>
-    <p dir="ltr">sghl</p>
-  </li>
-</ul>
-<h2>سلام</h2>
-<h2 dir="ltr">hello</h2>
 ```
 
 ## Options
 
-### types
+### `types`
 
-A list of nodes where the `dir` attribute should be added to.
+A list of node types that should receive the `dir` attribute.
 
-Default: `[]`
+**Default:** `[]`
 
-```javascript
+```ts
 TextDirection.configure({
   types: ["heading", "paragraph"],
 });
 ```
 
-### defaultDirection
+### `defaultDirection`
 
-In case you have set the text direction in a parent element of the editor (most likely the `<html>` element), you can set `defaultDirection` to avoid adding the `dir` attribute to elements that have the same direction as the `defaultDirection` because it's not needed. It can reduce the HTML output's size.
+If the editor is inside a parent element with a known direction (commonly `<html dir="rtl">` or `<html dir="ltr">`), you can set `defaultDirection` to avoid adding redundant dir attributes.
 
-Default: `null`
+This helps keep the generated HTML smaller and cleaner.
 
-```javascript
+**Default:** `null`
+
+```ts
 TextDirection.configure({
   defaultDirection: "rtl",
 });
@@ -127,19 +117,19 @@ TextDirection.configure({
 
 ## Commands
 
-### setTextDirection()
+### `setTextDirection(direction)`
 
-Set the text direction of the selected nodes to the specified value.
+Explicitly set the text direction of the currently selected nodes.
 
-```javascript
+```ts
 editor.commands.setTextDirection("rtl");
 ```
 
-### unsetTextDirection()
+### `unsetTextDirection()`
 
-Unset the text direction back to the `defaultDirection`.
+Remove the explicit direction and revert back to `defaultDirection`.
 
-```javascript
+```ts
 editor.commands.unsetTextDirection();
 ```
 
@@ -149,3 +139,9 @@ editor.commands.unsetTextDirection();
 | ----------------------- | -------------------- | ------------------- |
 | setTextDirection("ltr") | `Ctrl` + `Alt` + `l` | `Cmd` + `Alt` + `l` |
 | setTextDirection("rtl") | `Ctrl` + `Alt` + `r` | `Cmd` + `Alt` + `r` |
+
+## Notes
+
+- Direction detection is based on content-based, but the resulting `dir` value is explicit and stable.
+- Manual overrides always take precedence over auto-detection.
+- This extension is safe to use with server-side rendering.
