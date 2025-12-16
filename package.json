@@ -33,7 +33,7 @@
 	"scripts": {
 		"build": "tsdown",
 		"typecheck": "tsc --noEmit",
-		"release": "pnpm check && pnpm build && changeset publish",
+		"release": "pnpm typecheck && pnpm build && changeset publish",
 		"format": "biome format",
 		"format.write": "biome format --write",
 		"lint": "biome lint",
