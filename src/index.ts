@@ -75,7 +75,7 @@ export function getTextDirection(text: string): "ltr" | "rtl" | null {
  */
 function TextDirectionPlugin({ types }: { types: Array<string> }) {
 	return new Plugin({
-		key: new PluginKey("textDirection"),
+		key: new PluginKey("tiptapTextDirection"),
 		appendTransaction: (transactions, oldState, newState) => {
 			const docChanges = transactions.some(
 				(transaction) => transaction.docChanged,
