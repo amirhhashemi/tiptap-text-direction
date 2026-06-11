@@ -183,7 +183,7 @@ export interface TextDirectionOptions {
  * - Avoids `dir="auto"`
  */
 export const TextDirection = Extension.create<TextDirectionOptions>({
-	name: "textDirection",
+	name: "tiptapTextDirection",
 
 	addOptions() {
 		return {
