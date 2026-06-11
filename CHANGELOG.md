@@ -1,5 +1,11 @@
 # tiptap-text-direction
 
+## 0.5.0
+
+### Minor Changes
+
+- bbe70bc: Update plugin name
+
 ## 0.4.0
 
 ### Minor Changes
