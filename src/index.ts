@@ -5,6 +5,7 @@ import {
 	getChangedRanges,
 	findChildrenInRange,
 } from "@tiptap/core";
+import type { Node, ResolvedPos } from "@tiptap/pm/model";
 import { type Transaction, Plugin, PluginKey } from "@tiptap/pm/state";
 
 /**
@@ -68,6 +69,34 @@ export function getTextDirection(text: string): "ltr" | "rtl" | null {
 }
 
 /**
+ * Detect the direction of a list item (or any configured node wrapping other
+ * blocks) and of the text blocks directly inside it.
+ *
+ * A list marker sits on the side of its item's `dir`, so a left/right
+ * `textAlign` decides the direction. Alignment is kept on split, so new items
+ * follow it. Without alignment, the content decides.
+ *
+ * @returns `undefined` if the node is not (directly inside) such a wrapper
+ */
+function getWrapperDirection(
+	node: Node,
+	$pos: ResolvedPos,
+	types: Array<string>,
+): "ltr" | "rtl" | null | undefined {
+	if (node.isTextblock && !types.includes($pos.parent.type.name)) {
+		return undefined;
+	}
+	const align = (node.isTextblock ? node : node.firstChild)?.attrs.textAlign;
+	if (align === "left") {
+		return "ltr";
+	}
+	if (align === "right") {
+		return "rtl";
+	}
+	return getTextDirection(node.textContent);
+}
+
+/**
  * ProseMirror plugin that automatically applies a `dir` attribute to configured node types when their content changes.
  *
  * @param options - Plugin configuration
@@ -100,10 +129,20 @@ function TextDirectionPlugin({ types }: { types: Array<string> }) {
 				});
 
 				for (const { node, pos } of nodes) {
-					if (node.attrs.dir !== null && node.textContent.length > 0) {
+					const wrapperDirection = getWrapperDirection(
+						node,
+						newState.doc.resolve(pos),
+						types,
+					);
+					if (
+						wrapperDirection === undefined &&
+						node.attrs.dir !== null &&
+						getTextDirection(node.textContent) !== null
+					) {
 						continue;
 					}
-					const newTextDirection = getTextDirection(node.textContent);
+					const newTextDirection =
+						wrapperDirection ?? getTextDirection(node.textContent);
 					if (node.attrs.dir === newTextDirection) {
 						continue;
 					}
